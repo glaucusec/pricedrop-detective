@@ -5,12 +5,10 @@ const app = express();
 const port = 3000;
 
 const sequelize = require("./util/database");
-
 // models
 const Product = require("./models/Product");
-
 // routes
-const routes = require("./routes/product");
+const userProductRoutes = require("./routes/user/product");
 
 app.use(
   cors({
@@ -20,7 +18,7 @@ app.use(
 
 app.use(bodyParser.json());
 
-app.use("/", routes);
+app.use("/api/user", userProductRoutes);
 
 sequelize.sync().then((result) => {
   app.listen(port, () => {

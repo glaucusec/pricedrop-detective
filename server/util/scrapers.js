@@ -10,6 +10,7 @@ const findProductData = async (url) => {
         headless: "new",
         defaultViewport: false,
         userDataDir: "./tmp",
+        args: ["--no-sandbox"],
       });
       const page = await browser.newPage();
       await page.goto(url);
@@ -30,7 +31,8 @@ const findProductData = async (url) => {
       await browser.close();
       resolve({ title, price, imageURL });
     } catch (error) {
-      reject(`Error: ${error.message}`);
+      console.log(error);
+      reject(`Error@scraper.js: ${error}`);
     }
   });
 };

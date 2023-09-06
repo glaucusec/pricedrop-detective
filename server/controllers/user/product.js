@@ -1,13 +1,13 @@
-const path = require("path");
 const uuid = require("uuid");
 
-const Product = require("../models/Product");
-const { isValidURL, generateUniqueId } = require("../util/helpers");
-const { findProductData } = require("../util/scrapers");
+const Product = require("../../models/Product");
+const { isValidURL, generateUniqueId } = require("../../util/helpers");
+const { findProductData } = require("../../util/scrapers");
 
 exports.getAllProducts = async (req, res, next) => {
   const products = await Product.findAll({
     attributes: ["id", "title", "price", "url", "imageURL", "trackingStatus"],
+    order: [["createdAt", "DESC"]],
   });
   res.status(200).json(products);
 };
@@ -64,4 +64,32 @@ exports.toggleTracking = async (req, res, next) => {
       message: "Querying Database failed! Try again later",
     });
   }
+};
+
+exports.deleteProduct = async (req, res, next) => {
+  const id = req.params.id;
+  if (!id) {
+    return res.status(404).json({
+      error: "Invalid Product ID",
+      message: "Product ID provided is Invalid or null",
+    });
+  }
+
+  try {
+    await Product.destroy({
+      where: {
+        id: id,
+      },
+    });
+    return res.status(204).json({ message: "OK" });
+  } catch (error) {
+    return res.status(500).json({
+      error: "Checking record failed",
+      message: "Querying Database failed! Try again later",
+    });
+  }
+};
+
+exports.productDetails = (req, res, next) => {
+  console.log(req.body.id);
 };

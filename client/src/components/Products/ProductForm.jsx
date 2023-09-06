@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import axios from "axios";
-import { URLPrettier, isValidURL } from "../helpers/functions";
+import { URLPrettier, isValidURL } from "../../utils/functions";
 
 export const ProductForm = ({ addProductHandler }) => {
   const [loading, setIsLoading] = useState(false);
@@ -53,7 +53,7 @@ export const ProductForm = ({ addProductHandler }) => {
       <div className="field">
         <div className="control">
           <button className={`button is-link ${loading ? "is-loading" : " "}`}>
-            Submit
+            Add Product
           </button>
         </div>
       </div>
