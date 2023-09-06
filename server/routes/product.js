@@ -8,4 +8,6 @@ router.get("/products", productController.getAllProducts);
 
 router.post("/products", productController.addNewProduct);
 
+router.post('/toggle-tracking', productController.toggleTracking);
+
 module.exports = router;

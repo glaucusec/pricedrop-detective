@@ -28,6 +28,14 @@ const Product = sequelize.define("Product", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  imageURL: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  trackingStatus: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  },
 });
 
 module.exports = Product;

@@ -1,32 +1,41 @@
 import { useRef, useState } from "react";
 import axios from "axios";
-export const ProductForm = () => {
+import { URLPrettier, isValidURL } from "../helpers/functions";
+
+export const ProductForm = ({ addProductHandler }) => {
   const [loading, setIsLoading] = useState(false);
   const productRef = useRef();
 
   const formSubmitHandler = async (e) => {
     e.preventDefault();
-    if (!productRef.current.value) {
+    let productUrl = URLPrettier(productRef.current.value);
+    if (!productUrl || !isValidURL(productUrl)) {
       alert("Enter a valid URL");
+      productRef.current.value = "";
+      setIsLoading(false);
       return;
     }
-    let productUrl = productRef.current.value;
+
     productRef.current.value = "";
     setIsLoading(true);
-
-    const response = await axios.post(
-      "http://localhost:3000/products",
-      {
-        url: productUrl,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/products",
+        {
+          url: productUrl,
         },
-      }
-    );
-    console.log(response);
-    setIsLoading(false);
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      addProductHandler(response.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.log("Error posting Product Data:", error);
+      setIsLoading(false);
+    }
   };
 
   return (
