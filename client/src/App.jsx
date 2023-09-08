@@ -13,14 +13,16 @@ import ProductsPage from "./pages/Products/ProductsPage";
 function App() {
   return (
     <ProductsProvider>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/products">
-          <Route index element={<ProductsPage />} />
-          <Route path=":productId" element={<ProductInfoPage />} />
-        </Route>
-      </Routes>
+      <div className="container">
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/products">
+            <Route index element={<ProductsPage />} />
+            <Route path=":productId" element={<ProductInfoPage />} />
+          </Route>
+        </Routes>
+      </div>
     </ProductsProvider>
   );
 }

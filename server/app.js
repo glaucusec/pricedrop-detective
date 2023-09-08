@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 
 app.use("/api/user", userProductRoutes);
 
-sequelize.sync().then((result) => {
+sequelize.sync().then(() => {
   app.listen(port, () => {
     console.log("I am listening");
   });

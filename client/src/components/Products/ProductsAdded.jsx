@@ -5,8 +5,6 @@ import { toggleTrackingRequest, deleteProductRequest } from "./ProductHelpers";
 import Product from "./Product";
 
 export default function ProductsAdded({ products, setProductsHandler }) {
-  const [deleteLoading, deleteIsLoading] = useState(false);
-
   async function toggleTrackingHandler(prodId) {
     let status;
     let newProducts = products.map((product) => {

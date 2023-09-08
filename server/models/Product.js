@@ -36,6 +36,10 @@ const Product = sequelize.define("Product", {
     type: DataTypes.BOOLEAN,
     allowNull: false,
   },
+  rating: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
 });
 
 module.exports = Product;

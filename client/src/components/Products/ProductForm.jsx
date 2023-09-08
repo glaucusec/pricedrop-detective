@@ -20,7 +20,7 @@ export const ProductForm = ({ addProductHandler }) => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3000/products",
+        "http://localhost:3000/api/user/products",
         {
           url: productUrl,
         },
@@ -41,7 +41,6 @@ export const ProductForm = ({ addProductHandler }) => {
   return (
     <form className="form" onSubmit={formSubmitHandler}>
       <div className="field">
-        <h2 className="has-text-centered title is-5">Product URL</h2>
         <input
           type="text"
           className="input"

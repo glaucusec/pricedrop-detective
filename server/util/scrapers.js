@@ -18,9 +18,18 @@ const findProductData = async (url) => {
       const productTitle = await page.$("#productTitle");
       const productPrice = await page.$(".a-price-whole");
       const productImageURL = await page.$("#landingImage");
+      const productRating = await page.$eval(
+        "#averageCustomerReviews_feature_div > div:nth-child(2) > span:nth-child(1) > span:nth-child(1) > span:nth-child(1) > a:nth-child(1) > span:nth-child(1)",
+        (element) => element.innerText
+      );
 
-      if (!productTitle || !productPrice) {
-        throw new Error("Product title or price not found.");
+      if (
+        !productTitle ||
+        !productPrice ||
+        !productImageURL ||
+        !productRating
+      ) {
+        throw new Error("Product title/price/imageURL/rating not found.");
       }
       let title = await productTitle.evaluate((element) => element.innerText);
       let price = await productPrice.evaluate((element) => element.innerText);
@@ -29,7 +38,7 @@ const findProductData = async (url) => {
       );
 
       await browser.close();
-      resolve({ title, price, imageURL });
+      resolve({ title, price, imageURL, rating: productRating });
     } catch (error) {
       console.log(error);
       reject(`Error@scraper.js: ${error}`);

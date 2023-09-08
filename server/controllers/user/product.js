@@ -18,13 +18,14 @@ exports.addNewProduct = async (req, res, next) => {
     return res.status(400).json({ error: "Invalid URL Address" });
   }
   try {
-    const { title, price, imageURL } = await findProductData(url);
+    const { title, price, imageURL, rating } = await findProductData(url);
     const product = await Product.create({
       id: uuid.v4(),
       title: title,
       price: price,
       url: url,
       imageURL: imageURL,
+      rating: rating,
       trackingStatus: false,
     });
     const returnData = {
@@ -34,11 +35,16 @@ exports.addNewProduct = async (req, res, next) => {
       url: product.url,
       imageURL: product.imageURL,
       trackingStatus: product.trackingStatus,
+      rating: rating,
       message: "Valid Product",
     };
     return res.status(200).json(returnData);
   } catch (error) {
     console.log(error);
+    return res.status(500).json({
+      error: "Checking record failed",
+      message: "Querying Database failed! Try again later",
+    });
   }
 };
 
@@ -90,6 +96,8 @@ exports.deleteProduct = async (req, res, next) => {
   }
 };
 
-exports.productDetails = (req, res, next) => {
-  console.log(req.body.id);
+exports.productDetails = async (req, res, next) => {
+  const id = req.body.id;
+  const product = await Product.findByPk(id);
+  res.status(200).json(product);
 };

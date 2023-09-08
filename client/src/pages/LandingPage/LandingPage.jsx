@@ -1,7 +1,12 @@
-import React from 'react'
+import React from "react";
 
-export default function LandingPage() {
+import Header from "../../components/Header/Header";
+
+export default function Home() {
   return (
-    <div>LandingPage</div>
-  )
+    <React.Fragment>
+      <Header />
+      <div>LandingPage...</div>
+    </React.Fragment>
+  );
 }
