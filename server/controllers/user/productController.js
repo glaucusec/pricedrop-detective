@@ -1,7 +1,7 @@
 const uuid = require("uuid");
 
 const Product = require("../../models/Product");
-const { isValidURL, generateUniqueId } = require("../../util/helpers");
+const { isValidURL, generateUniqueId } = require("../../util/helpers/common");
 const { findProductData } = require("../../util/scrapers");
 
 exports.getAllProducts = async (req, res, next) => {
@@ -20,7 +20,7 @@ exports.addNewProduct = async (req, res, next) => {
   try {
     const { title, price, imageURL, rating } = await findProductData(url);
     const product = await Product.create({
-      id: uuid.v4(),
+      id: generateUniqueId(),
       title: title,
       price: price,
       url: url,

@@ -32,7 +32,7 @@ export default function ProductInfoPage() {
       {product ? (
         <div className="columns is-multiline">
           <div className="column is-half">
-            <figure class="image is-500x300">
+            <figure class="image is-128x128">
               <img src={product.imageURL} />
             </figure>
           </div>

@@ -1,3 +1,5 @@
+const uuid = require("uuid");
+
 const isValidURL = (url) => {
   const pattern = new RegExp(
     "^(https?:\\/\\/)?" + // protocol
@@ -12,4 +14,8 @@ const isValidURL = (url) => {
   return !!pattern.test(url);
 };
 
-module.exports = { isValidURL };
+const generateUniqueId = () => {
+  return uuid.v4();
+};
+
+module.exports = { isValidURL, generateUniqueId };
