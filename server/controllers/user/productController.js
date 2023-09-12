@@ -9,7 +9,7 @@ const {
 const { findProductData } = require("../../util/scrapers");
 
 exports.getAllProducts = async (req, res, next) => {
-  const products = await Product.findAll({
+  const products = await req.user.getProducts({
     attributes: ["id", "title", "price", "url", "imageURL", "trackingStatus"],
     order: [["createdAt", "DESC"]],
   });
@@ -18,13 +18,13 @@ exports.getAllProducts = async (req, res, next) => {
 
 exports.addNewProduct = async (req, res, next) => {
   const url = URLPrettier(req.body.url);
-  console.log(url);
+
   if (!isValidURL(url)) {
     return res.status(400).json({ error: "Invalid URL Address" });
   }
   try {
     const { title, price, imageURL, rating } = await findProductData(url);
-    const product = await Product.create({
+    const product = await req.user.createProduct({
       id: generateUniqueId(),
       title: title,
       price: price,

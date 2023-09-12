@@ -12,7 +12,11 @@ router.get(
   productController.getAllProducts
 );
 
-router.post("/products", productController.addNewProduct);
+router.post(
+  "/products",
+  authMiddleWare.authenticateToken,
+  productController.addNewProduct
+);
 
 router.post("/toggle-tracking", productController.toggleTracking);
 

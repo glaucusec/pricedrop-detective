@@ -1,4 +1,5 @@
 import React, { Fragment, useContext, useRef } from "react";
+import { Navigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../../context/UserAuth";
 
@@ -9,6 +10,7 @@ export default function Login() {
   const passwordRef = useRef();
 
   const authCtx = useContext(UserContext);
+  const isLoggedIn = !!authCtx.user.id;
 
   const loginFormSubmitHandler = async (e) => {
     e.preventDefault();
@@ -23,12 +25,16 @@ export default function Login() {
         },
         { withCredentials: true }
       );
-      console.log();
+      alert("You are logged in!");
       authCtx.setUserHandler({ id: response.data.id });
     } catch (err) {
-      console.log(err);
+      alert(err.response.data.message);
     }
   };
+
+  if (isLoggedIn) {
+    return <Navigate to={"/home"} />;
+  }
   return (
     <Fragment>
       <Header />

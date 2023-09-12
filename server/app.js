@@ -13,6 +13,7 @@ const User = require("./models/User");
 User.belongsToMany(Product, { through: "UserProduct" });
 Product.belongsToMany(User, { through: "UserProduct" });
 Product.hasMany(Price);
+Price.belongsTo(Product);
 
 // routes
 const userProductRoutes = require("./routes/user/product");

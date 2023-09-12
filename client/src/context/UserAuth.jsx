@@ -4,7 +4,7 @@ import { useCookies } from "react-cookie";
 export const UserContext = createContext({});
 
 export default function UserAuthProvider(props) {
-  const [cookies, setCookies] = useCookies();
+  const [cookies, setCookies, removeCookies] = useCookies();
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -21,9 +21,16 @@ export default function UserAuthProvider(props) {
     setUser(user);
   }
 
+  function setInvalidUserHandler() {
+    removeCookies("token");
+    removeCookies("user_id");
+    setUser({});
+  }
+
   const userCtx = {
     user: user,
     setUserHandler: setUserHandler,
+    setInvalidUserHandler: setInvalidUserHandler,
   };
 
   return (

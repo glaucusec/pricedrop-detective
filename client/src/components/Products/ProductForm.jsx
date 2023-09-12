@@ -28,6 +28,7 @@ export const ProductForm = ({ addProductHandler }) => {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true,
         }
       );
       addProductHandler(response.data);
