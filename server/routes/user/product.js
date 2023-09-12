@@ -3,8 +3,14 @@ const express = require("express");
 const router = express.Router();
 
 const productController = require("../../controllers/user/productController");
+// middleware
+const authMiddleWare = require("../../middleware/authenticate");
 
-router.get("/products", productController.getAllProducts);
+router.get(
+  "/products",
+  authMiddleWare.authenticateToken,
+  productController.getAllProducts
+);
 
 router.post("/products", productController.addNewProduct);
 

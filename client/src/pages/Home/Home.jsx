@@ -1,14 +1,13 @@
 import React from "react";
 
 import Header from "../../components/Header/Header";
-import SectionDivider from "../../components/SectionDivider";
 export default function Home() {
   return (
     <React.Fragment>
       <Header />
-      <SectionDivider>
+      <div className="container">
         <div>Home...</div>
-      </SectionDivider>
+      </div>
     </React.Fragment>
   );
 }

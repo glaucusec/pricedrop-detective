@@ -1,5 +1,15 @@
 const uuid = require("uuid");
 
+const URLPrettier = (url) => {
+  let parts = url.split("ref=");
+  let newURL;
+  if (parts.length == 2) {
+    newURL = parts[0];
+  } else {
+    newURL = url;
+  }
+  return newURL;
+};
 const isValidURL = (url) => {
   const pattern = new RegExp(
     "^(https?:\\/\\/)?" + // protocol
@@ -18,4 +28,4 @@ const generateUniqueId = () => {
   return uuid.v4();
 };
 
-module.exports = { isValidURL, generateUniqueId };
+module.exports = { isValidURL, generateUniqueId, URLPrettier };

@@ -18,7 +18,10 @@ export default function ProductsProvider(props) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/user/products");
+        const response = await axios.get(
+          "http://localhost:3000/api/user/products",
+          { withCredentials: true }
+        );
         setProducts(response.data);
       } catch (error) {
         console.log("Error fetching products data:", error);

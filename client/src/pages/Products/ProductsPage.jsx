@@ -6,7 +6,6 @@ import ProductsAdded from "../../components/Products/ProductsAdded";
 import { ProductsContext } from "../../context/Products";
 
 import Header from "../../components/Header/Header";
-import SectionDivider from "../../components/SectionDivider";
 
 export default function ProductsList() {
   const productCtx = useContext(ProductsContext);
@@ -17,7 +16,7 @@ export default function ProductsList() {
   return (
     <React.Fragment>
       <Header />
-      <SectionDivider>
+      <div className="container">
         <div className="columns is-multiline">
           <div className="column is-12">
             <ProductForm addProductHandler={addProductHandler} />
@@ -29,7 +28,7 @@ export default function ProductsList() {
             />
           </div>
         </div>
-      </SectionDivider>
+      </div>
     </React.Fragment>
   );
 }

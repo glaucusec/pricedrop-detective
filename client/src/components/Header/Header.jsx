@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-
-import SectionDivider from "../SectionDivider";
+import { UserContext } from "../../context/UserAuth";
 
 export default function Header() {
+  const authCtx = useContext(UserContext);
+  const isLoggedIn = !!authCtx.user.id;
   return (
-    <SectionDivider>
+    <div className="container">
       <nav class="navbar mb-6" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
           <Link class="navbar-item" to="/">
@@ -27,12 +28,16 @@ export default function Header() {
 
         <div id="navbarBasicExample" class="navbar-menu">
           <div class="navbar-start">
-            <Link to={"/home"} class="navbar-item">
-              Home
-            </Link>
-            <Link to={"/products"} class="navbar-item">
-              Products
-            </Link>
+            {isLoggedIn && (
+              <Link to={"/home"} class="navbar-item">
+                Home
+              </Link>
+            )}
+            {isLoggedIn && (
+              <Link to={"/products"} class="navbar-item">
+                Products
+              </Link>
+            )}
 
             <div class="navbar-item has-dropdown is-hoverable">
               <a class="navbar-link">More</a>
@@ -50,17 +55,26 @@ export default function Header() {
           <div class="navbar-end">
             <div class="navbar-item">
               <div class="buttons">
-                <Link to={"/register"} class="button is-primary">
-                  <strong>Sign up</strong>
-                </Link>
-                <Link to={"/login"} class="button is-light">
-                  Log in
-                </Link>
+                {!isLoggedIn && (
+                  <Link to={"/register"} class="button is-primary">
+                    <strong>Sign up</strong>
+                  </Link>
+                )}
+                {!isLoggedIn && (
+                  <Link to={"/login"} class="button is-light">
+                    Log in
+                  </Link>
+                )}
+                {isLoggedIn && (
+                  <Link to={"/logout"} class="button is-danger">
+                    Log out
+                  </Link>
+                )}
               </div>
             </div>
           </div>
         </div>
       </nav>
-    </SectionDivider>
+    </div>
   );
 }

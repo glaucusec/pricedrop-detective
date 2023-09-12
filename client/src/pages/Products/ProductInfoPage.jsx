@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 // components
 import Rating from "../../components/ProductInfo/Rating";
@@ -29,22 +29,45 @@ export default function ProductInfoPage() {
   return (
     <React.Fragment>
       <Header />
-      {product ? (
-        <div className="columns is-multiline">
-          <div className="column is-half">
-            <figure class="image is-128x128">
-              <img src={product.imageURL} />
-            </figure>
+      <div className="container">
+        {product ? (
+          <div className="columns">
+            <article class="media">
+              <figure class="media-left">
+                <p class="image is-256x256">
+                  <img src={product.imageURL} />
+                </p>
+              </figure>
+              <div class="media-content">
+                <div class="content">
+                  <p>
+                    <strong>{product.title}</strong>
+                    <small>31m</small>
+                    <br />
+                    <Rating rating={product.rating} />
+                  </p>
+                </div>
+                <nav class="level is-mobile">
+                  <div class="level-left">
+                    <Link className="level-item" to={`/products/${product.id}`}>
+                      <button className="button is-info ">View Details</button>
+                    </Link>
+                    <button className="button level-item">Delete</button>
+                  </div>
+                  <div class="level-right">
+                    <button className="button level-item">Delete</button>
+                  </div>
+                </nav>
+              </div>
+              <div class="media-right">
+                <button class="delete"></button>
+              </div>
+            </article>
           </div>
-          <div className="column is-half">
-            <h1 className="title">{product.title}</h1>
-            <Rating rating={product.rating} />
-          </div>
-          <div className="column"></div>
-        </div>
-      ) : (
-        <div> Loading... </div>
-      )}
+        ) : (
+          <div> Loading... </div>
+        )}
+      </div>
     </React.Fragment>
   );
 }

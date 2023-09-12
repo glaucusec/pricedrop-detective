@@ -38,28 +38,17 @@ export default function ProductsAdded({ products, setProductsHandler }) {
       {products.length != 0 ? (
         <Fragment>
           <h2 className="has-text-centered title is-5">Products Added</h2>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Product Name</th>
-                <th>Remove Product</th>
-                <th>Toggle Tracking</th>
-                <th>View Details</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((product) => {
-                return (
-                  <Product
-                    product={product}
-                    toggleTrackingHandler={toggleTrackingHandler}
-                    deleteProductHandler={deleteProductHandler}
-                  />
-                );
-              })}
-            </tbody>
-          </table>
+          <div className="columns is-multiline is-1">
+            {products.map((product) => {
+              return (
+                <Product
+                  product={product}
+                  toggleTrackingHandler={toggleTrackingHandler}
+                  deleteProductHandler={deleteProductHandler}
+                />
+              );
+            })}
+          </div>
         </Fragment>
       ) : (
         <h2 className="title is-5">You have no products Added.</h2>

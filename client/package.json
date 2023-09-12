@@ -13,7 +13,9 @@
     "axios": "^1.5.0",
     "bulma": "^0.9.4",
     "bulma-switch": "^2.0.4",
+    "jwt-decode": "^3.1.2",
     "react": "^18.2.0",
+    "react-cookie": "^6.1.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.15.0"
   },

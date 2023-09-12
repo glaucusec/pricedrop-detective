@@ -1,7 +1,11 @@
 const uuid = require("uuid");
 
 const Product = require("../../models/Product");
-const { isValidURL, generateUniqueId } = require("../../util/helpers/common");
+const {
+  isValidURL,
+  generateUniqueId,
+  URLPrettier,
+} = require("../../util/helpers/common");
 const { findProductData } = require("../../util/scrapers");
 
 exports.getAllProducts = async (req, res, next) => {
@@ -13,7 +17,8 @@ exports.getAllProducts = async (req, res, next) => {
 };
 
 exports.addNewProduct = async (req, res, next) => {
-  const url = req.body.url;
+  const url = URLPrettier(req.body.url);
+  console.log(url);
   if (!isValidURL(url)) {
     return res.status(400).json({ error: "Invalid URL Address" });
   }

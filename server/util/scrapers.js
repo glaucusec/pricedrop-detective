@@ -7,7 +7,7 @@ const findProductData = async (url) => {
   return new Promise(async (resolve, reject) => {
     try {
       const browser = await puppeteerExtra.launch({
-        headless: "new",
+        headless: false,
         defaultViewport: false,
         userDataDir: "./tmp",
         args: ["--no-sandbox"],

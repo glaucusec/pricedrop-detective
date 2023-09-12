@@ -1,26 +1,38 @@
 import React, { Fragment, useContext, useRef } from "react";
-
+import axios from "axios";
 import { UserContext } from "../../context/UserAuth";
 
-import SectionDivider from "../../components/SectionDivider";
 import Header from "../../components/Header/Header";
 
 export default function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  const userCtx = useContext(UserContext);
-  const loginFormSubmitHandler = (e) => {
+  const authCtx = useContext(UserContext);
+
+  const loginFormSubmitHandler = async (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
-    const password = emailRef.current.value;
-
-    const response = axios.post("http://localhost:3000/api/auth", {});
+    const password = passwordRef.current.value;
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/login",
+        {
+          email: email,
+          password: password,
+        },
+        { withCredentials: true }
+      );
+      console.log();
+      authCtx.setUserHandler({ id: response.data.id });
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <Fragment>
       <Header />
-      <SectionDivider>
+      <div className="container">
         <form onSubmit={loginFormSubmitHandler} className="form">
           <h1 className="title"> Login</h1>
           <div class="field">
@@ -60,7 +72,7 @@ export default function Login() {
             </div>
           </div>
         </form>
-      </SectionDivider>
+      </div>
     </Fragment>
   );
 }

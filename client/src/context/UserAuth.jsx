@@ -1,17 +1,29 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
+import { useCookies } from "react-cookie";
 
 export const UserContext = createContext({});
 
 export default function UserAuthProvider(props) {
+  const [cookies, setCookies] = useCookies();
   const [user, setUser] = useState({});
 
-  function updateUser(user) {
+  useEffect(() => {
+    if (cookies.user_id && !user.id) {
+      setUser({ id: cookies.user_id });
+    }
+  }, []);
+
+  if (!user && existingSession && user_id) {
+    setUser({ token: existingSession, user_id: user_id });
+  }
+
+  function setUserHandler(user) {
     setUser(user);
   }
 
   const userCtx = {
     user: user,
-    updateUser: updateUser,
+    setUserHandler: setUserHandler,
   };
 
   return (

@@ -20,7 +20,8 @@ const userAuthRoutes = require("./routes/user/auth");
 
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:5173", // Update this with your React app's URL
+    credentials: true, // Allow credentials (cookies, in this case)
   })
 );
 
@@ -29,7 +30,7 @@ app.use(bodyParser.json());
 app.use("/api/user", userProductRoutes);
 app.use("/api/auth", userAuthRoutes);
 
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync().then(() => {
   app.listen(port, () => {
     console.log("I am listening");
   });
