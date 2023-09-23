@@ -1,72 +1,55 @@
 import React, { useContext } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../context/UserAuth";
+
+import "./Header.css";
 
 export default function Header() {
   const authCtx = useContext(UserContext);
   const isLoggedIn = !!authCtx.user.id;
+
+  async function logoutHandler(e) {
+    e.preventDefault();
+    authCtx.setInvalidUserHandler();
+    document.location = "/";
+  }
   return (
-    <div className="container">
-      <nav class="navbar mb-6" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-          <Link class="navbar-item" to="/">
-            PriceDrop
-          </Link>
-
-          <a
-            role="button"
-            class="navbar-burger"
-            aria-label="menu"
-            aria-expanded="false"
-            data-target="navbarBasicExample"
-          >
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-          </a>
-        </div>
-
-        <div id="navbarBasicExample" class="navbar-menu">
-          <div class="navbar-start">
+    <nav
+      className="navbar mb-6 is-info"
+      role="navigation"
+      aria-label="main navigation"
+    >
+      <div className="container">
+        <div id="navbarBasicExample" className="navbar-menu">
+          <div className="navbar-start">
             {isLoggedIn && (
-              <Link to={"/home"} class="navbar-item">
+              <Link to={"/home"} className="navbar-item bold_link">
                 Home
               </Link>
             )}
             {isLoggedIn && (
-              <Link to={"/products"} class="navbar-item">
+              <Link to={"/products"} className="navbar-item bold_link">
                 Products
               </Link>
             )}
-
-            <div class="navbar-item has-dropdown is-hoverable">
-              <a class="navbar-link">More</a>
-
-              <div class="navbar-dropdown">
-                <a class="navbar-item">About</a>
-                <a class="navbar-item">Jobs</a>
-                <a class="navbar-item">Contact</a>
-                <hr class="navbar-divider" />
-                <a class="navbar-item">Report an issue</a>
-              </div>
-            </div>
           </div>
 
-          <div class="navbar-end">
-            <div class="navbar-item">
-              <div class="buttons">
-                {!isLoggedIn && (
-                  <Link to={"/register"} class="button is-primary">
+          <div className="navbar-end">
+            <div className="navbar-item">
+              <div className="buttons">
+                {/* {!isLoggedIn && (
+                  <Link to={"/register"} className="button is-primary ">
                     <strong>Sign up</strong>
                   </Link>
                 )}
                 {!isLoggedIn && (
-                  <Link to={"/login"} class="button is-light">
+                  <Link to={"/login"} className="button is-light">
                     Log in
                   </Link>
-                )}
+                )} */}
                 {isLoggedIn && (
-                  <Link to={"/logout"} class="button is-danger">
+                  <Link to="#" onClick={logoutHandler} className="button is-small is-danger">
                     Log out
                   </Link>
                 )}
@@ -74,7 +57,7 @@ export default function Header() {
             </div>
           </div>
         </div>
-      </nav>
-    </div>
+      </div>
+    </nav>
   );
 }

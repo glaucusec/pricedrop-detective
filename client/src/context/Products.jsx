@@ -40,8 +40,12 @@ export default function ProductsProvider(props) {
         console.log("Error fetching products data:", error);
       }
     };
+
+    // if (authCtx.user.id) {
+    //   fetchData();
+    // }
     fetchData();
-  }, [authCtx.user]);
+  }, [authCtx.user.id]);
 
   const productCtx = {
     products: products,

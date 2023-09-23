@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
 require("dotenv").config();
 const jwtSecrectToken = process.env.jwtSecret;
 
@@ -99,12 +100,12 @@ const register = async (req, res, next) => {
     console.log(`<>User named ${newUser.fullName} created`);
 
     res.cookie("token", token, {
-      httpOnly: true,
-      maxAge: expirationTime * 1000,
+      httpOnly: false,
+      maxAge: expirationTime,
     });
 
     res.cookie("user_id", newUser.id, {
-      maxAge: expirationTime * 1000,
+      maxAge: expirationTime,
     });
 
     return res.status(201).json({
@@ -117,4 +118,12 @@ const register = async (req, res, next) => {
   }
 };
 
-module.exports = { login, register };
+const logout = (req, res, next) => {
+  res.clearCookie("token");
+  res.clearCookie("user_id");
+
+  // Send a response indicating successful logout
+  return res.status(200).json({ message: "Logged out successfully" });
+};
+
+module.exports = { login, register, logout };

@@ -1,7 +1,7 @@
 import "bulma/css/bulma.min.css";
 import "bulma-switch";
 import React, { useContext } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 // Contexts
 import ProductsProvider from "./context/Products";
 import { UserContext } from "./context/UserAuth";
@@ -23,9 +23,15 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/home" element={<Home />} />
+        <Route
+          path="/home"
+          element={isLoggedin ? <Home /> : <Navigate to={"/login"} />}
+        />
         <Route path="/products">
-          <Route index element={<ProductsPage />} />
+          <Route
+            index
+            element={isLoggedin ? <ProductsPage /> : <Navigate to={"/login"} />}
+          />
           <Route path=":productId" element={<ProductInfoPage />} />
         </Route>
       </Routes>

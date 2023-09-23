@@ -1,19 +1,34 @@
 const uuid = require("uuid");
 
 const Product = require("../../models/Product");
+const UserProduct = require("../../models/UserProduct");
+const sequelize = require("../../util/database");
 const {
   isValidURL,
   generateUniqueId,
   URLPrettier,
 } = require("../../util/helpers/common");
-const { findProductData } = require("../../util/scrapers");
+const {
+  findProductData,
+  findDetailedProductInfo,
+} = require("../../util/scrapers");
 
 exports.getAllProducts = async (req, res, next) => {
-  const products = await req.user.getProducts({
-    attributes: ["id", "title", "price", "url", "imageURL", "trackingStatus"],
-    order: [["createdAt", "DESC"]],
-  });
-  res.status(200).json(products);
+  // console.log(req.user);
+  const userId = req.user.id;
+  const query = `
+  SELECT products.id AS id, 
+  products.title AS title, 
+  products.price AS price, 
+  products.url AS url, 
+  products.imageURL as imageURL,
+  userproducts.trackingStatus
+  FROM products
+  INNER JOIN userproducts ON products.id = userproducts.productId AND '${userId}' = userproducts.userId
+`;
+  const products = await sequelize.query(query);
+
+  res.status(200).json(products[0]);
 };
 
 exports.addNewProduct = async (req, res, next) => {
@@ -31,17 +46,15 @@ exports.addNewProduct = async (req, res, next) => {
       url: url,
       imageURL: imageURL,
       rating: rating,
-      trackingStatus: false,
     });
+
     const returnData = {
       id: product.id,
       title: product.title,
       price: product.price,
       url: product.url,
       imageURL: product.imageURL,
-      trackingStatus: product.trackingStatus,
       rating: rating,
-      message: "Valid Product",
     };
     return res.status(200).json(returnData);
   } catch (error) {
@@ -57,7 +70,12 @@ exports.toggleTracking = async (req, res, next) => {
   const id = req.body.id;
   const trackingStatus = req.body.trackingStatus;
   try {
-    const record = await Product.findByPk(id);
+    const record = await UserProduct.findOne({
+      where: {
+        ProductId: id,
+        UserId: req.user.id,
+      },
+    });
     if (!record) {
       return res.status(404).json({
         error: "Product not found",
@@ -87,13 +105,11 @@ exports.deleteProduct = async (req, res, next) => {
   }
 
   try {
-    await Product.destroy({
-      where: {
-        id: id,
-      },
-    });
+    const product = await req.user.getProducts({ where: { id: id } });
+    await req.user.removeProduct(product);
     return res.status(204).json({ message: "OK" });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       error: "Checking record failed",
       message: "Querying Database failed! Try again later",
@@ -103,6 +119,17 @@ exports.deleteProduct = async (req, res, next) => {
 
 exports.productDetails = async (req, res, next) => {
   const id = req.body.id;
-  const product = await Product.findByPk(id);
+  const product = await Product.findByPk(id, {
+    attributes: { exclude: ["createdAt", "updatedAt"] },
+  });
+
   res.status(200).json(product);
+};
+
+exports.productDetailedInfo = async (req, res, next) => {
+  const id = req.body.id;
+  const product = await Product.findByPk(id, { attributes: ["url"] });
+  const url = product.url;
+  const detailedInfo = await findDetailedProductInfo(url);
+  return res.status(200).json(detailedInfo);
 };

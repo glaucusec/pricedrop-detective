@@ -4,14 +4,17 @@ const stealth = require("puppeteer-extra-plugin-stealth");
 puppeteerExtra.use(stealth());
 
 const findProductData = async (url) => {
+  let browser;
+
   return new Promise(async (resolve, reject) => {
     try {
-      const browser = await puppeteerExtra.launch({
-        headless: false,
-        defaultViewport: false,
+      browser = await puppeteerExtra.launch({
+        headless: "new",
+        defaultViewport: null,
         userDataDir: "./tmp",
         args: ["--no-sandbox"],
       });
+
       const page = await browser.newPage();
       await page.goto(url);
 
@@ -37,13 +40,64 @@ const findProductData = async (url) => {
         element.getAttribute("src")
       );
 
-      await browser.close();
       resolve({ title, price, imageURL, rating: productRating });
     } catch (error) {
-      console.log(error);
-      reject(`Error@scraper.js: ${error}`);
+      console.error(`Error@findProductData: ${error}`);
+      reject(error);
+    } finally {
+      if (browser) {
+        await browser.close();
+      }
     }
   });
 };
 
-module.exports = { findProductData };
+const findDetailedProductInfo = async (url) => {
+  let browser; // Declare browser variable outside the try-catch
+
+  return new Promise(async (resolve, reject) => {
+    try {
+      browser = await puppeteerExtra.launch({
+        headless: "new",
+        defaultViewport: null,
+        userDataDir: "./tmp",
+        args: ["--no-sandbox"],
+      });
+      const page = await browser.newPage();
+      await page.goto(url);
+
+      await page.waitForSelector(".a-normal.a-spacing-micro");
+
+      const data = await page.evaluate(() => {
+        const table = document.querySelector(".a-normal.a-spacing-micro");
+        const rows = table.querySelectorAll("tr");
+
+        const dataArray = [];
+
+        rows.forEach((row) => {
+          const columns = row.querySelectorAll("td");
+
+          // Check if the row contains exactly 2 columns and does not have scripts
+          if (columns.length === 2 && !row.querySelector("script")) {
+            const key = columns[0].textContent.trim();
+            const value = columns[1].textContent.trim();
+            dataArray.push({ [key]: value });
+          }
+        });
+
+        return dataArray;
+      });
+
+      resolve(data);
+    } catch (error) {
+      console.error(`Error@findDetailedProductInfo: ${error}`);
+      reject(error);
+    } finally {
+      if (browser) {
+        await browser.close();
+      }
+    }
+  });
+};
+
+module.exports = { findProductData, findDetailedProductInfo };

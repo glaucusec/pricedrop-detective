@@ -13,9 +13,9 @@ export default function UserAuthProvider(props) {
     }
   }, []);
 
-  if (!user && existingSession && user_id) {
-    setUser({ token: existingSession, user_id: user_id });
-  }
+  // if (!user && existingSession && user_id) {
+  //   setUser({ token: existingSession, user_id: user_id });
+  // }
 
   function setUserHandler(user) {
     setUser(user);

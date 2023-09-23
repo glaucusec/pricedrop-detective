@@ -2,7 +2,10 @@ import { useRef, useState } from "react";
 import axios from "axios";
 import { URLPrettier, isValidURL } from "../../utils/functions";
 
-export const ProductForm = ({ addProductHandler }) => {
+export const ProductForm = ({
+  addProductHandler,
+  showAddProductFormHandler,
+}) => {
   const [loading, setIsLoading] = useState(false);
   const productRef = useRef();
 
@@ -50,10 +53,22 @@ export const ProductForm = ({ addProductHandler }) => {
         />
       </div>
 
-      <div className="field">
+      <div class="field is-grouped">
         <div className="control">
-          <button className={`button is-link ${loading ? "is-loading" : " "}`}>
-            Add Product
+          <button
+            className={`button is-small is-link ${
+              loading ? "is-loading" : " "
+            }`}
+          >
+            Add
+          </button>
+        </div>
+        <div class="control">
+          <button
+            onClick={showAddProductFormHandler}
+            class="button is-small is-link is-light"
+          >
+            Cancel
           </button>
         </div>
       </div>

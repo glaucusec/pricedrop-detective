@@ -10,14 +10,14 @@ export default function Product({
 }) {
   return (
     <div className="column m-1 customColumn">
-      <article class="media" key={product.id}>
-        <figure class="media-left">
-          <p class="image is-128x128">
+      <article className="media" key={product.id}>
+        <figure className="media-left">
+          <p className="image is-128x128">
             <img src={product.imageURL} />
           </p>
         </figure>
-        <div class="media-content">
-          <div class="content">
+        <div className="media-content">
+          <div className="content">
             <p>
               <strong>{product.title}</strong> <small>@johnsmith</small>{" "}
               <small>31m</small>
@@ -25,8 +25,8 @@ export default function Product({
               {product.title}
             </p>
           </div>
-          <nav class="level is-mobile">
-            <div class="level-left">
+          <nav className="level is-mobile">
+            <div className="level-left">
               <button
                 onClick={() => deleteProductHandler(product.id)}
                 className="button is-danger level-item is-small"
@@ -39,7 +39,7 @@ export default function Product({
                 </button>
               </Link>
             </div>
-            <div class="level-right">
+            <div className="level-right">
               <div className="field level-item">
                 <input
                   onClick={() => toggleTrackingHandler(product.id)}
@@ -54,14 +54,14 @@ export default function Product({
             </div>
           </nav>
         </div>
-        <div class="media-right">
-          <button class="delete"></button>
+        <div className="media-right">
+          <button className="delete"></button>
         </div>
       </article>
     </div>
     // <tr key={product.id}>
     //   <td>
-    //     <figure class="image is-128x128">
+    //     <figure className="image is-128x128">
     //       <img src={product.imageURL} />
     //     </figure>
     //   </td>

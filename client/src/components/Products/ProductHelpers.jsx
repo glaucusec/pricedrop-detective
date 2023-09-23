@@ -7,7 +7,7 @@ async function toggleTrackingRequest(productId, status) {
         id: productId,
         trackingStatus: status,
       },
-      { headers: { "Content-Type": "application/json" } }
+      { headers: { "Content-Type": "application/json" }, withCredentials: true }
     );
     return true;
   } catch (error) {
@@ -19,7 +19,8 @@ async function toggleTrackingRequest(productId, status) {
 async function deleteProductRequest(productId) {
   try {
     const response = await axios.delete(
-      `http://localhost:3000/api/user/products/${productId}`
+      `http://localhost:3000/api/user/products/${productId}`,
+      { withCredentials: true }
     );
     return response.status == 204 && response.statusText == "No Content"
       ? true

@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useRef } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../../context/UserAuth";
 
@@ -37,46 +37,43 @@ export default function Login() {
   }
   return (
     <Fragment>
-      <Header />
       <div className="container">
         <form onSubmit={loginFormSubmitHandler} className="form">
           <h1 className="title"> Login</h1>
-          <div class="field">
-            <label class="label">Email</label>
-            <div class="control has-icons-left ">
+          <div className="field">
+            <label className="label">Email</label>
+            <div className="control has-icons-left ">
               <input
-                class="input"
+                className="input"
                 type="email"
                 placeholder="Enter your Email..."
                 ref={emailRef}
               />
-              <span class="icon is-small is-left">
-                <i class="fas fa-envelope"></i>
+              <span className="icon is-small is-left">
+                <i className="fas fa-envelope"></i>
               </span>
             </div>
           </div>
-          <div class="field">
-            <label class="label">Password</label>
-            <div class="control has-icons-left">
+          <div className="field">
+            <label className="label">Password</label>
+            <div className="control has-icons-left">
               <input
-                class="input"
+                className="input"
                 type="password"
                 placeholder="Enter your Password..."
                 ref={passwordRef}
               />
-              <span class="icon is-small is-left">
-                <i class="fas fa-envelope"></i>
+              <span className="icon is-small is-left">
+                <i className="fas fa-envelope"></i>
               </span>
             </div>
           </div>
-          <div class="field is-grouped">
-            <div class="control">
-              <button class="button is-link">Login</button>
-            </div>
-            <div class="control">
-              <button class="button is-link is-light">Cancel</button>
+          <div className="field is-grouped">
+            <div className="control">
+              <button className="button is-link">Login</button>
             </div>
           </div>
+          Not Registered? <Link to={"/register"}>Register Here</Link>
         </form>
       </div>
     </Fragment>

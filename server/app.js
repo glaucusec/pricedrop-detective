@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const app = express();
 const port = 3000;
 
@@ -9,9 +10,10 @@ const sequelize = require("./util/database");
 const Product = require("./models/Product");
 const Price = require("./models/Price");
 const User = require("./models/User");
+const UserProduct = require("./models/UserProduct");
 // relationships
-User.belongsToMany(Product, { through: "UserProduct" });
-Product.belongsToMany(User, { through: "UserProduct" });
+User.belongsToMany(Product, { through: UserProduct });
+Product.belongsToMany(User, { through: UserProduct });
 Product.hasMany(Price);
 Price.belongsTo(Product);
 
@@ -25,6 +27,8 @@ app.use(
     credentials: true, // Allow credentials (cookies, in this case)
   })
 );
+
+app.use(cookieParser());
 
 app.use(bodyParser.json());
 

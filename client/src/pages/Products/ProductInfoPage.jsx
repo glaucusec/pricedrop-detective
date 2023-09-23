@@ -4,19 +4,22 @@ import { useParams, Link } from "react-router-dom";
 
 // components
 import Rating from "../../components/ProductInfo/Rating";
+import ProductInfoImage from "../../components/ProductInfo/ProductInfoImage";
 import Header from "../../components/Header/Header";
 
 export default function ProductInfoPage() {
   const [product, setProduct] = useState({});
+  const [productDetailed, setProductDetailed] = useState([]);
   const { productId } = useParams();
 
   useEffect(() => {
-    async function fetchProductDetails() {
+    async function fetchProductBasic() {
       const response = await axios.post(
-        `http://localhost:3000/api/user/product/`,
+        `http://localhost:3000/api/user/product-basic/`,
         {
           id: productId,
-        }
+        },
+        { withCredentials: true }
       );
 
       setProduct({
@@ -24,7 +27,22 @@ export default function ProductInfoPage() {
         rating: parseFloat(response.data.rating),
       });
     }
-    fetchProductDetails();
+    fetchProductBasic();
+  }, []);
+
+  useEffect(() => {
+    async function fetchDetailedInfo() {
+      const response = await axios.post(
+        "http://localhost:3000/api/user/product-detailed",
+        {
+          id: productId,
+        },
+        { withCredentials: true }
+      );
+
+      setProductDetailed(response.data);
+    }
+    fetchDetailedInfo();
   }, []);
   return (
     <React.Fragment>
@@ -32,14 +50,10 @@ export default function ProductInfoPage() {
       <div className="container">
         {product ? (
           <div className="columns">
-            <article class="media">
-              <figure class="media-left">
-                <p class="image is-256x256">
-                  <img src={product.imageURL} />
-                </p>
-              </figure>
-              <div class="media-content">
-                <div class="content">
+            <article className="media">
+              <ProductInfoImage imageURL={product.imageURL} />
+              <div className="media-content">
+                <div className="content">
                   <p>
                     <strong>{product.title}</strong>
                     <small>31m</small>
@@ -47,20 +61,39 @@ export default function ProductInfoPage() {
                     <Rating rating={product.rating} />
                   </p>
                 </div>
-                <nav class="level is-mobile">
-                  <div class="level-left">
-                    <Link className="level-item" to={`/products/${product.id}`}>
-                      <button className="button is-info ">View Details</button>
-                    </Link>
-                    <button className="button level-item">Delete</button>
+                <nav className="level is-mobile">
+                  <div className="level-left">
+                    <a href={product.url} target="_blank">
+                      <button className="button is-info ">
+                        View Product on Amazon
+                      </button>
+                    </a>
                   </div>
-                  <div class="level-right">
-                    <button className="button level-item">Delete</button>
+                  <div className="level-right">
+                    <button className="button is-danger level-item">
+                      Delete
+                    </button>
                   </div>
                 </nav>
+                <ol>
+                  {productDetailed.length > 0 ? (
+                    productDetailed.map((detail) => {
+                      for (const key in detail) {
+                        return (
+                          <tr>
+                            <td style={{ fontWeight: "bold" }}>{key} :</td>
+                            <td>{detail[key]}</td>
+                          </tr>
+                        );
+                      }
+                    })
+                  ) : (
+                    <p>Loading...</p>
+                  )}
+                </ol>
               </div>
-              <div class="media-right">
-                <button class="delete"></button>
+              <div className="media-right">
+                <button className="delete"></button>
               </div>
             </article>
           </div>

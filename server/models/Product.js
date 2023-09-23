@@ -32,10 +32,6 @@ const Product = sequelize.define("Product", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  trackingStatus: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-  },
   rating: {
     type: DataTypes.STRING,
     allowNull: false,
